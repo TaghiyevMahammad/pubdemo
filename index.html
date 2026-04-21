@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Beer House Elite | Pivə və Məzə Menyusu</title>
+  <meta name="description" content="PUB / Beer House üçün premium, responsiv, Azərbaycan dilli pivə və məzə menyu demosu." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-0: #0f0f0f;
+      --bg-1: #151210;
+      --bg-2: #1f1814;
+      --wood: #2a1f19;
+      --text: #f8f4ee;
+      --muted: #c7beb1;
+      --gold: #f3b248;
+      --amber: #ff8f1f;
+      --beer-yellow: #ffd35b;
+      --copper: #b87333;
+      --card: rgba(255, 255, 255, 0.06);
+      --line: rgba(255, 255, 255, 0.15);
+      --radius: 18px;
+      --shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+      --max: 1180px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Manrope", sans-serif;
+      color: var(--text);
+      line-height: 1.65;
+      background:
+        radial-gradient(circle at 20% 15%, rgba(184, 115, 51, 0.15), transparent 38%),
+        radial-gradient(circle at 88% 28%, rgba(255, 211, 91, 0.14), transparent 40%),
+        linear-gradient(180deg, var(--bg-2) 0%, var(--bg-1) 45%, var(--bg-0) 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    .floating-lights {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .light {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.32;
+      filter: blur(10px);
+      animation: rise linear infinite;
+      background: radial-gradient(circle, rgba(255, 179, 71, 0.95) 0%, rgba(255, 179, 71, 0) 70%);
+    }
+
+    .light:nth-child(2n) {
+      background: radial-gradient(circle, rgba(243, 178, 72, 0.85) 0%, rgba(243, 178, 72, 0) 70%);
+      opacity: 0.28;
+    }
+
+    @keyframes rise {
+      0% {
+        transform: translate3d(0, 110vh, 0) scale(0.8);
+      }
+      100% {
+        transform: translate3d(0, -30vh, 0) scale(1.35);
+      }
+    }
+
+    .grain {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.07;
+      background-image:
+        radial-gradient(circle at 25% 30%, rgba(255, 255, 255, 0.5) 0 0.8px, transparent 1px),
+        radial-gradient(circle at 70% 65%, rgba(255, 255, 255, 0.35) 0 0.8px, transparent 1px);
+      background-size: 3px 3px, 4px 4px;
+    }
+
+    .container {
+      width: min(var(--max), 92vw);
+      margin-inline: auto;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+      font-family: "Poppins", sans-serif;
+      line-height: 1.2;
+      letter-spacing: 0.2px;
+    }
+
+    section {
+      padding: 88px 0;
+      position: relative;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 120;
+      backdrop-filter: blur(12px);
+      background: linear-gradient(180deg, rgba(12, 10, 9, 0.92), rgba(12, 10, 9, 0.56));
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .nav {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .brand {
+      color: var(--text);
+      text-decoration: none;
+      font-family: "Poppins", sans-serif;
+      font-weight: 700;
+      font-size: clamp(1rem, 2.9vw, 1.2rem);
+      letter-spacing: 0.8px;
+    }
+
+    .brand span {
+      color: var(--gold);
+      text-shadow: 0 0 14px rgba(243, 178, 72, 0.55);
+    }
+
+    .links {
+      display: none;
+      list-style: none;
+      gap: 20px;
+    }
+
+    .links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: color 0.25s ease;
+    }
+
+    .links a:hover {
+      color: var(--text);
+    }
+
+    .btn {
+      border: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      color: var(--text);
+      border-radius: 12px;
+      font-weight: 700;
+      padding: 0.82rem 1.25rem;
+      cursor: pointer;
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.25s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      transform: translateX(-120%) skewX(-20deg);
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+      transition: transform 0.55s ease;
+      z-index: -1;
+    }
+
+    .btn:hover::before {
+      transform: translateX(120%) skewX(-20deg);
+    }
+
+    .btn-primary {
+      background: linear-gradient(120deg, #cc6f16, var(--amber), var(--beer-yellow));
+      box-shadow: 0 12px 28px rgba(255, 159, 28, 0.35);
+      color: #221507;
+    }
+
+    .btn-secondary {
+      background: linear-gradient(120deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.06));
+      border: 1px solid rgba(255, 255, 255, 0.24);
+    }
+
+    .nav-cta {
+      padding: 0.6rem 0.95rem;
+      font-size: 0.87rem;
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      align-items: center;
+      isolation: isolate;
+      overflow: clip;
+      padding-top: 28px;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background:
+        linear-gradient(95deg, rgba(8, 8, 8, 0.82) 12%, rgba(19, 13, 10, 0.58) 50%, rgba(10, 8, 7, 0.78) 100%),
+        url("https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=2000&q=80") center/cover no-repeat;
+      transform: scale(1.04);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background:
+        radial-gradient(circle at 25% 80%, rgba(255, 143, 31, 0.22), transparent 42%),
+        radial-gradient(circle at 80% 25%, rgba(243, 178, 72, 0.19), transparent 40%);
+    }
+
+    .hero-content {
+      max-width: 780px;
+      padding: 20px 0 36px;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 2.3px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 211, 91, 0.45);
+      padding: 0.34rem 0.74rem;
+      color: #ffe2b6;
+      background: rgba(255, 179, 71, 0.08);
+      margin-bottom: 16px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 6.4vw, 4.3rem);
+      margin-bottom: 14px;
+      text-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+    }
+
+    .hero p {
+      color: #ece3d8;
+      max-width: 64ch;
+      font-size: clamp(0.96rem, 2.4vw, 1.14rem);
+      margin-bottom: 24px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .stats {
+      padding: 26px 0 0;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .stat-card {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+      background: linear-gradient(150deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03));
+      box-shadow: var(--shadow);
+    }
+
+    .stat-number {
+      font-family: "Poppins", sans-serif;
+      font-size: clamp(1.35rem, 4vw, 2rem);
+      color: var(--beer-yellow);
+      font-weight: 700;
+      line-height: 1;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .section-head {
+      margin-bottom: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+
+    .section-head p {
+      max-width: 62ch;
+      color: var(--muted);
+    }
+
+    .line {
+      height: 1px;
+      background: linear-gradient(90deg, rgba(243, 178, 72, 0), rgba(243, 178, 72, 0.48), rgba(243, 178, 72, 0));
+      margin-bottom: 20px;
+    }
+
+    .menu-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-bottom: 16px;
+    }
+
+    .chip {
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text);
+      font-size: 0.86rem;
+      padding: 0.5rem 0.88rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .chip:hover,
+    .chip.active {
+      border-color: var(--amber);
+      background: rgba(255, 159, 28, 0.13);
+      box-shadow: 0 0 14px rgba(255, 159, 28, 0.24);
+      color: #ffe0b5;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: linear-gradient(160deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03));
+      box-shadow: var(--shadow);
+      transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(255, 196, 94, 0.72);
+      box-shadow: 0 16px 34px rgba(255, 143, 31, 0.2), 0 0 26px rgba(255, 211, 91, 0.15);
+    }
+
+    .card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      filter: saturate(1.08) contrast(1.05);
+    }
+
+    .card-body {
+      padding: 16px;
+    }
+
+    .card-body h3 {
+      font-size: 1.08rem;
+      margin-bottom: 6px;
+    }
+
+    .card-body p {
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin-bottom: 11px;
+    }
+
+    .price {
+      color: var(--beer-yellow);
+      font-weight: 800;
+      font-family: "Poppins", sans-serif;
+    }
+
+    .combo-grid,
+    .why-grid,
+    .review-grid,
+    .instagram-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .combo-card,
+    .why-card,
+    .review-card,
+    .contact-card,
+    .qr-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(160deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03));
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+
+    .badge {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 0.28rem 0.65rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .why-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      background: linear-gradient(140deg, rgba(255, 179, 71, 0.2), rgba(184, 115, 51, 0.22));
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .qr-card {
+      text-align: center;
+    }
+
+    .qr-box {
+      width: min(220px, 76%);
+      margin: 14px auto 0;
+      aspect-ratio: 1 / 1;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.34);
+      box-shadow: 0 0 26px rgba(255, 179, 71, 0.26);
+      background:
+        linear-gradient(45deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%) 0 0 / 18px 18px,
+        linear-gradient(-45deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%) 0 0 / 18px 18px,
+        linear-gradient(135deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%) 9px 9px / 18px 18px,
+        linear-gradient(-135deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%) 9px 9px / 18px 18px,
+        linear-gradient(140deg, rgba(255, 179, 71, 0.24), rgba(184, 115, 51, 0.2));
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      color: #fff5e5;
+    }
+
+    .contact-card p {
+      margin-bottom: 6px;
+      color: #f3ece3;
+    }
+
+    .contact-card strong {
+      color: var(--beer-yellow);
+      font-weight: 700;
+    }
+
+    .map {
+      margin-top: 12px;
+      min-height: 160px;
+      border: 1px dashed rgba(255, 255, 255, 0.36);
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      color: #d8cfc3;
+      background: linear-gradient(130deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+      text-align: center;
+      padding: 12px;
+    }
+
+    .stars {
+      color: #ffd25e;
+      letter-spacing: 1px;
+      display: inline-block;
+      margin-bottom: 8px;
+    }
+
+    .instagram-card {
+      min-height: 230px;
+      border-radius: 15px;
+      border: 1px solid var(--line);
+      overflow: hidden;
+      position: relative;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .instagram-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.74));
+      transition: opacity 0.25s ease;
+    }
+
+    .instagram-card:hover::after {
+      opacity: 0.45;
+    }
+
+    .instagram-card span {
+      position: absolute;
+      left: 12px;
+      bottom: 10px;
+      z-index: 2;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.14);
+      padding: 28px 0;
+      background: rgba(8, 6, 5, 0.55);
+    }
+
+    .footer-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .footer-brand {
+      color: #f6eee2;
+      font-family: "Poppins", sans-serif;
+      font-weight: 700;
+    }
+
+    @media (min-width: 620px) {
+      .grid,
+      .combo-grid,
+      .why-grid,
+      .review-grid,
+      .instagram-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (min-width: 900px) {
+      .links {
+        display: flex;
+      }
+
+      .grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .combo-grid,
+      .why-grid,
+      .review-grid,
+      .instagram-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .two-col {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="floating-lights" aria-hidden="true">
+    <span class="light" style="left:6%; width:160px; height:160px; animation-duration:28s; animation-delay:-2s;"></span>
+    <span class="light" style="left:22%; width:130px; height:130px; animation-duration:24s; animation-delay:-11s;"></span>
+    <span class="light" style="left:44%; width:170px; height:170px; animation-duration:31s; animation-delay:-6s;"></span>
+    <span class="light" style="left:67%; width:145px; height:145px; animation-duration:27s; animation-delay:-13s;"></span>
+    <span class="light" style="left:85%; width:155px; height:155px; animation-duration:30s; animation-delay:-16s;"></span>
+  </div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="container nav">
+      <a href="#ana" class="brand">BEER <span>HOUSE</span> ELITE</a>
+      <ul class="links">
+        <li><a href="#pive">Pivə Menyusu</a></li>
+        <li><a href="#meze">Məzələr</a></li>
+        <li><a href="#combo">Kombolar</a></li>
+        <li><a href="#elaqe">Əlaqə</a></li>
+      </ul>
+      <a class="btn btn-secondary nav-cta" href="https://wa.me/994107264904?text=Salam%2C%20sifaris%20vermek%20isteyirem." target="_blank" rel="noopener noreferrer">Sifariş Ver</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="ana">
+      <div class="container hero-content reveal">
+        <span class="hero-tag">Premium Beer House Demo</span>
+        <h1>Soyuq Pivə, Dadlı Məzələr</h1>
+        <p>Dostlarla görüşmək, oyuna baxmaq və keyfiyyətli vaxt keçirmək üçün ideal məkan.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#pive">Menyuya Bax</a>
+          <a class="btn btn-secondary" href="https://wa.me/994107264904?text=Salam%2C%20sifaris%20vermek%20isteyirem." target="_blank" rel="noopener noreferrer">Sifariş Ver</a>
+        </div>
+
+        <div class="stats reveal">
+          <div class="stats-grid">
+            <article class="stat-card">
+              <span class="stat-number" data-count="45">0</span>
+              <span class="stat-label">Pivə Növü</span>
+            </article>
+            <article class="stat-card">
+              <span class="stat-number" data-count="28">0</span>
+              <span class="stat-label">Məzə Seçimi</span>
+            </article>
+            <article class="stat-card">
+              <span class="stat-number" data-count="1200">0</span>
+              <span class="stat-label">Aylıq Qonaq</span>
+            </article>
+            <article class="stat-card">
+              <span class="stat-number" data-count="98">0</span>
+              <span class="stat-label">Məmnuniyyət (%)</span>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pive">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <h2>Pivə Menyusu</h2>
+            <p>Draft, şüşə, yerli və xarici premium seçimlərlə pivə sevərlərə xüsusi təcrübə.</p>
+          </div>
+        </div>
+        <div class="line"></div>
+
+        <div class="menu-filters reveal" id="beerFilters">
+          <button class="chip active" data-filter="all">Hamısı</button>
+          <button class="chip" data-filter="draft">Draft Pivələr</button>
+          <button class="chip" data-filter="bottle">Şüşə Pivələr</button>
+          <button class="chip" data-filter="local">Yerli Pivələr</button>
+          <button class="chip" data-filter="foreign">Xarici Pivələr</button>
+          <button class="chip" data-filter="premium">Premium Pivələr</button>
+        </div>
+
+        <div class="grid" id="beerGrid">
+          <article class="card reveal" data-category="draft local">
+            <img src="https://images.unsplash.com/photo-1618885472179-5e474019f2a9?auto=format&fit=crop&w=1200&q=80" alt="Draft pivə bokalı" />
+            <div class="card-body">
+              <h3>Qızıl Draft Lager</h3>
+              <p>Yumşaq köpük, yüngül acılıq və təravətli sonluq.</p>
+              <div class="price">8 AZN</div>
+            </div>
+          </article>
+
+          <article class="card reveal" data-category="draft foreign">
+            <img src="https://images.unsplash.com/photo-1516997121675-4c2d1684aa3e?auto=format&fit=crop&w=1200&q=80" alt="Tünd draft pivə" />
+            <div class="card-body">
+              <h3>Stout Draft</h3>
+              <p>Qəhvə və kakao notları ilə zəngin, dolğun dada sahibdir.</p>
+              <div class="price">11 AZN</div>
+            </div>
+          </article>
+
+          <article class="card reveal" data-category="bottle local">
+            <img src="https://images.unsplash.com/photo-1436076863939-06870fe779c2?auto=format&fit=crop&w=1200&q=80" alt="Şüşə pivələr" />
+            <div class="card-body">
+              <h3>Baku Pilsner</h3>
+              <p>Yerli istehsal, balanslı dad və rahat içim.</p>
+              <div class="price">7 AZN</div>
+            </div>
+          </article>
+
+          <article class="card reveal" data-category="bottle foreign">
+            <img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=1200&q=80" alt="Xarici pivə şüşəsi" />
+            <div class="card-body">
+              <h3>German Wheat</h3>
+              <p>Buğda ətri, meyvə notları və ipək kimi tekstura.</p>
+              <div class="price">12 AZN</div>
+            </div>
+          </article>
+
+          <article class="card reveal" data-category="local premium">
+            <img src="https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=1200&q=80" alt="Premium pivə qədəhi" />
+            <div class="card-body">
+              <h3>Amber Reserve</h3>
+              <p>Kəhrəba rəngi, karamel toxunuşu və uzun sonluq.</p>
+              <div class="price">14 AZN</div>
+            </div>
+          </article>
+
+          <article class="card reveal" data-category="foreign premium">
+            <img src="https://images.unsplash.com/photo-1584225064536-d0fbc0a10f18?auto=format&fit=crop&w=1200&q=80" alt="Premium xarici pivə" />
+            <div class="card-body">
+              <h3>Belgian Craft Select</h3>
+              <p>Mürəkkəb aroma, sitrus notları və premium keyfiyyət.</p>
+              <div class="price">16 AZN</div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="meze">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <h2>Məzə Menyusu</h2>
+            <p>Pivəyə uyğun xüsusi hazırlanmış ləzzətli qəlyanaltılar və paylaşımlıq setlər.</p>
+          </div>
+        </div>
+        <div class="line"></div>
+
+        <div class="grid">
+          <article class="card reveal">
+            <img src="https://images.unsplash.com/photo-1576107232684-1279f390859f?auto=format&fit=crop&w=1200&q=80" alt="Kartof fri" />
+            <div class="card-body">
+              <h3>Kartof Fri</h3>
+              <p>Xırtıldayan fri, xüsusi sous ilə təqdim olunur.</p>
+              <div class="price">6 AZN</div>
+            </div>
+          </article>
+
+          <article class="card reveal">
+            <img src="https://images.unsplash.com/photo-1562967914-608f82629710?auto=format&fit=crop&w=1200&q=80" alt="Toyuq qanadı" />
+            <div class="card-body">
+              <h3>Toyuq Qanadı</h3>
+              <p>Acılı və ya BBQ sous seçimi ilə marinadlı qanadlar.</p>
+              <div class="price">10 AZN</div>
+            </div>
+          </article>
+
+          <article class="card reveal">
+            <img src="https://images.unsplash.com/photo-1608039755401-742074f0548d?auto=format&fit=crop&w=1200&q=80" alt="Nugget" />
+            <div class="card-body">
+              <h3>Nugget</h3>
+              <p>Yumşaq içlikli, qızılı qızardılmış toyuq nuggetləri.</p>
+              <div class="price">8 AZN</div>
+            </div>
+          </article>
+
+          <article class="card reveal">
+            <img src="https://images.unsplash.com/photo-1529042410759-befb1204b468?auto=format&fit=crop&w=1200&q=80" alt="Kolbasa seti" />
+            <div class="card-body">
+              <h3>Kolbasa Seti</h3>
+              <p>Qril kolbasalar, xardal və turşu əlavələri ilə.</p>
+              <div class="price">13 AZN</div>
+            </div>
+          </article>
+
+          <article class="card reveal">
+            <img src="https://images.unsplash.com/photo-1452195100486-9cc805987862?auto=format&fit=crop&w=1200&q=80" alt="Pendir assorti" />
+            <div class="card-body">
+              <h3>Pendir Assorti</h3>
+              <p>Müxtəlif pendir növləri, qoz və meyvə ilə.</p>
+              <div class="price">15 AZN</div>
+            </div>
+          </article>
+
+          <article class="card reveal">
+            <img src="https://images.unsplash.com/photo-1599599810769-bcde5a160d32?auto=format&fit=crop&w=1200&q=80" alt="Quru çərəz" />
+            <div class="card-body">
+              <h3>Quru Çərəz</h3>
+              <p>Duzlu fındıq, badam və tum qarışığı.</p>
+              <div class="price">7 AZN</div>
+            </div>
+          </article>
+
+          <article class="card reveal">
+            <img src="https://images.unsplash.com/photo-1639024471283-03518883512d?auto=format&fit=crop&w=1200&q=80" alt="Soğan halqası" />
+            <div class="card-body">
+              <h3>Soğan Halqası</h3>
+              <p>Xırtıldayan panirli halqalar, sarımsaq sousu ilə.</p>
+              <div class="price">7 AZN</div>
+            </div>
+          </article>
+
+          <article class="card reveal">
+            <img src="https://images.unsplash.com/photo-1566478989037-eec170784d0b?auto=format&fit=crop&w=1200&q=80" alt="Çips" />
+            <div class="card-body">
+              <h3>Çips</h3>
+              <p>Klassik və paprika dadlı çips seçimləri.</p>
+              <div class="price">5 AZN</div>
+            </div>
+          </article>
+
+          <article class="card reveal">
+            <img src="https://images.unsplash.com/photo-1615937722923-67f6deaf2cc9?auto=format&fit=crop&w=1200&q=80" alt="Qarışıq məzə seti" />
+            <div class="card-body">
+              <h3>Qarışıq Məzə Seti</h3>
+              <p>Fri, qanad, nugget və çərəzdən ibarət paylaşımlıq set.</p>
+              <div class="price">19 AZN</div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="combo">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <h2>Kombo Təkliflər</h2>
+            <p>Daha çox sifariş üçün hazırlanmış gəlirli və cəlbedici paketlər.</p>
+          </div>
+        </div>
+        <div class="line"></div>
+
+        <div class="combo-grid">
+          <article class="combo-card reveal">
+            <span class="badge">🔥 Endirim</span>
+            <h3>2 Pivə + Fri</h3>
+            <p>İki soyuq pivə və böyük kartof fri bir yerdə sərfəli qiymətə.</p>
+            <div class="price">15 AZN</div>
+          </article>
+
+          <article class="combo-card reveal">
+            <span class="badge">⭐ Popular</span>
+            <h3>4 Pivə + Məzə Seti</h3>
+            <p>Qrup üçün ideal seçim: dörd pivə və qarışıq məzə seti.</p>
+            <div class="price">34 AZN</div>
+          </article>
+
+          <article class="combo-card reveal">
+            <span class="badge">🍺 Best Seller</span>
+            <h3>Dost Paketi</h3>
+            <p>6 pivə, kolbasa seti və soğan halqası ilə tam paylaşım paketi.</p>
+            <div class="price">49 AZN</div>
+          </article>
+
+          <article class="combo-card reveal">
+            <span class="badge">🔥 Endirim</span>
+            <h3>Oyun Gecəsi Paketi</h3>
+            <p>4 pivə, qanad, çips və xüsusi ekran zonasında matç keyfi.</p>
+            <div class="price">39 AZN</div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="qrmenu">
+      <div class="container two-col">
+        <article class="qr-card reveal">
+          <h2>QR Kodu Oxut, Menyuya Dərhal Bax</h2>
+          <p style="color: var(--muted); margin-top: 8px;">Masa yanında sürətli seçim, kampaniyaları anında görmək və rahat sifariş üçün.</p>
+          <div class="qr-box">QR NÜMUNƏ</div>
+        </article>
+
+        <article class="contact-card reveal" id="elaqe">
+          <h3>Əlaqə</h3>
+          <p><strong>Ünvan:</strong> Bakı şəh., Nizami küç. 120</p>
+          <p><strong>Əlaqə nömrəsi:</strong> +994 12 345 67 89</p>
+          <p><strong>Instagram:</strong> @beerhouseelite</p>
+          <p><strong>İş saatları:</strong> Hər gün 16:00 - 02:00</p>
+          <div class="map">Xəritə yerləşdirmə hissəsi (Google Maps placeholder)</div>
+        </article>
+      </div>
+    </section>
+
+    <section id="instagram">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <h2>Instagram Önizləmə</h2>
+            <p>Məkanın canlı atmosferini göstərən paylaşımlar daha çox rezervasiyaya çevrilir.</p>
+          </div>
+        </div>
+
+        <div class="instagram-grid">
+          <article class="instagram-card reveal" style="background-image: url('https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&w=1000&q=80');"><span>@beerhouseelite</span></article>
+          <article class="instagram-card reveal" style="background-image: url('https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=1000&q=80');"><span>@beerhouseelite</span></article>
+          <article class="instagram-card reveal" style="background-image: url('https://images.unsplash.com/photo-1516997121675-4c2d1684aa3e?auto=format&fit=crop&w=1000&q=80');"><span>@beerhouseelite</span></article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-wrap">
+      <div class="footer-brand">Beer House Elite</div>
+      <div>Bütün hüquqlar qorunur. © Magify Services</div>
+    </div>
+  </footer>
+
+  <script>
+    const beerChips = document.querySelectorAll('#beerFilters .chip');
+    const beerCards = document.querySelectorAll('#beerGrid .card');
+
+    beerChips.forEach((chip) => {
+      chip.addEventListener('click', () => {
+        beerChips.forEach((c) => c.classList.remove('active'));
+        chip.classList.add('active');
+
+        const filter = chip.dataset.filter;
+
+        beerCards.forEach((card) => {
+          const categoryList = card.dataset.category.split(' ');
+          const visible = filter === 'all' || categoryList.includes(filter);
+          card.style.display = visible ? 'block' : 'none';
+        });
+      });
+    });
+
+    const revealElements = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      },
+      { threshold: 0.18 }
+    );
+
+    revealElements.forEach((el) => revealObserver.observe(el));
+
+    const counterElements = document.querySelectorAll('.stat-number');
+    const counterObserver = new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) {
+            return;
+          }
+
+          const el = entry.target;
+          const target = Number(el.dataset.count);
+          const duration = 1300;
+          const start = performance.now();
+
+          const step = (now) => {
+            const progress = Math.min((now - start) / duration, 1);
+            const value = Math.floor(progress * target);
+            el.textContent = value.toString();
+
+            if (progress < 1) {
+              requestAnimationFrame(step);
+            } else {
+              el.textContent = target.toString();
+            }
+          };
+
+          requestAnimationFrame(step);
+          observer.unobserve(el);
+        });
+      },
+      { threshold: 0.7 }
+    );
+
+    counterElements.forEach((el) => counterObserver.observe(el));
+  </script>
+</body>
+</html>
